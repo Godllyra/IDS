@@ -2,12 +2,14 @@
 #include <string>
 #include <cctype>
 
+// Función para verificar si un carácter es una vocal
 bool esVocal(char letra)
 {
     letra = std::tolower(letra);
     return (letra == 'a' || letra == 'e' || letra == 'i' || letra == 'o' || letra == 'u');
 }
 
+// Función para obtener la primera vocal en una cadena
 char getPrimeraVolcal(const std::string &apellido_p)
 {
     for (char letra : apellido_p)
@@ -17,9 +19,10 @@ char getPrimeraVolcal(const std::string &apellido_p)
             return letra;
         }
     }
-    return 'X';
+    return 'x'; // Devuelve 'x' si no se encuentra ninguna vocal
 }
 
+// Función para calcular el RFC
 std::string calcRFC(const std::string &nombre, const std::string &apellido_p, const std::string &apellido_m, const std::string &nacimiento)
 {
     std::string rfc;
@@ -27,13 +30,14 @@ std::string calcRFC(const std::string &nombre, const std::string &apellido_p, co
     char primerLetra_p = apellido_p[0];
     char primerVocal = getPrimeraVolcal(apellido_p);
 
-    char primeraLetra_m = (!apellido_m.empty()) ? apellido_m[0] : 'x';
+    char primeraLetra_m = (!apellido_m.empty()) ? apellido_m[0] : 'x'; // Usa 'x' si no hay apellido materno
     char primeraLetra_n = nombre[0];
 
     std::string anio = nacimiento.substr(2, 2);
     std::string mes = nacimiento.substr(5, 2);
     std::string dia = nacimiento.substr(8, 2);
 
+    // Construye el RFC
     rfc = primerLetra_p;
     rfc += primerVocal;
     rfc += primeraLetra_m;
