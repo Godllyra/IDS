@@ -2,6 +2,7 @@
 #include <sql.h>
 #include <sqlext.h>
 #include <iostream>
+#include <iomanip>
 using namespace std;
 // Se define una función printError que imprime los detalles de un error ODBC.
 void printError(SQLHANDLE handle, SQLSMALLINT type) {
@@ -46,7 +47,9 @@ int main() {
                 SQLLEN num_empleadoLen, nombreLen, apellido_paternoLen, apellido_maternoLen, fecha_nacimientoLen, centro_trabajoLen, puestoLen, descripcion_puestoLen, directivoLen, rfcLen;
 
                 // Obtener y mostrar los resultados
-                cout << "|No. empleado|-----Nombre completo-----|--Fecha de nacimineto--|-----------Centro, puesto y directivo-----------|--RFC-------------------" << endl;
+                cout << "+---------------+---------------------------------+------------+--------------------------+---------+-------------+-------------+" << endl;
+                cout << "| No. empleado  |   Nombre                        | Nacimineto |          Centro          |  Puesto | ¿Directivo? |    RFC      |" << endl;
+                cout << "+---------------+---------------------------------+------------+--------------------------+---------+-------------+-------------+" << endl;
                 while (SQLFetch(hStmt) == SQL_SUCCESS) {
                     SQLGetData(hStmt, 1, SQL_C_SLONG, &num_empleado, sizeof(num_empleado), &num_empleadoLen);
                     SQLGetData(hStmt, 2, SQL_C_CHAR, nombre, sizeof(nombre), &nombreLen);
@@ -58,16 +61,17 @@ int main() {
                     SQLGetData(hStmt, 8, SQL_C_CHAR, descripcion_puesto, sizeof(descripcion_puesto), &descripcion_puestoLen);
                     SQLGetData(hStmt, 9, SQL_C_BIT, &directivo, sizeof(directivo), &directivoLen);
                     SQLGetData(hStmt, 10, SQL_C_CHAR, rfc, sizeof(rfc), &rfcLen);
-                    cout << "|    " <<num_empleado 
-                         << "       | " << nombre 
-                         << " " << apellido_paterno 
-                         << " " << apellido_materno 
-                         << "        | " << fecha_nacimiento
-                         << "             | " << centro_trabajo 
-                         << ", " << puesto
-                         << ", " << (directivo ? "Sí" : "No")
-                         << "                | " <<rfc << endl;
+                    string nombre_com = string((char*)nombre) + " " + string((char*)apellido_paterno) + " " + string((char*)apellido_materno);
+                    cout << "| " << setw(14) << right << num_empleado 
+                         << "| " << setw(32) << left << nombre_com  
+                         << "| " << setw(11) << left<< fecha_nacimiento
+                         << "| " << setw(25) << left << centro_trabajo 
+                         << "| " << setw(8) << left << puesto
+                         << "| " << setw(12) << left << (directivo ? "Si" : "No")
+                         << "| " << setw(10) << left << rfc
+                         << " |" << endl;
                 }
+                cout << "+---------------+---------------------------------+------------+--------------------------+---------+-------------+-------------+" << endl;
             } else {
                 cout << "Error al ejecutar la consulta SQL" << endl;
                 printError(hStmt, SQL_HANDLE_STMT);
