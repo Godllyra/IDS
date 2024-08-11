@@ -1,9 +1,9 @@
+// Se incluyen los encabezados necesarios para utilizar las funciones de ODBC: sql.h y sqlext.h.
 #include <sql.h>
 #include <sqlext.h>
 #include <iostream>
-
 using namespace std;
-
+// Se define una función printError que imprime los detalles de un error ODBC.
 void printError(SQLHANDLE handle, SQLSMALLINT type) {
     SQLCHAR sqlState[1024];
     SQLCHAR message[1024];
@@ -12,25 +12,22 @@ void printError(SQLHANDLE handle, SQLSMALLINT type) {
     SQLGetDiagRec(type, handle, 1, sqlState, &nativeError, message, sizeof(message), &textLength);
     cout << "Error: " << message << " SQLState: " << sqlState << endl;
 }
-
 int main() { 
     SQLHENV hEnv;
     SQLHDBC hDbc;
     SQLRETURN ret;
-
-    // Asignar un gestor de entorno
+    // Asignar un gestor de entorno ODBC (SQLHENV) y se establece la versión de ODBC a 3.0.
     ret = SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &hEnv);
     ret = SQLSetEnvAttr(hEnv, SQL_ATTR_ODBC_VERSION, (SQLPOINTER)SQL_OV_ODBC3, 0);
-
-    // Asignar un gestor de conexión
+    // Asignar un gestor de conexión ODBC (SQLHDBC)
     ret = SQLAllocHandle(SQL_HANDLE_DBC, hEnv, &hDbc);
-
-    // Conectarse a la base de datos
+    /* Se intenta conectar a la base de datos utilizando la función SQLConnect(). Los parámetros son el nombre de
+    la fuente de datos (DSN), el nombre de usuario del DBSM y la contraseña.*/
     ret = SQLConnect(hDbc, (SQLCHAR*)"Conect_uni", SQL_NTS, (SQLCHAR*)"zack", SQL_NTS, (SQLCHAR*)"0000", SQL_NTS);
-
+    // Si la conexión es exitosa, se imprime un mensaje de éxito.
     if (ret == SQL_SUCCESS || ret == SQL_SUCCESS_WITH_INFO) {
         cout << "Conectado a la base de datos exitosamente." << endl;
-        // Ejecutar una consulta SQL para obtener los datos de la tabla uni_db.empleados
+        
         SQLHSTMT hStmt;
         ret = SQLAllocHandle(SQL_HANDLE_STMT, hDbc, &hStmt);
         if (ret == SQL_SUCCESS || ret == SQL_SUCCESS_WITH_INFO) {
@@ -80,14 +77,14 @@ int main() {
             cout << "Error al asignar el gestor de declaración" << endl;
             printError(hDbc, SQL_HANDLE_DBC);
         }
+    // Si la conexión falla, se imprime un mensaje de error y se llama a la función printError() para obtener más detalles.
     } else {
         cout << "Fallo la conexion a la base de datos" << endl;
         printError(hDbc, SQL_HANDLE_DBC);
     }
-    // Desconectar y liberar gestores de entorno
+    // Finalmente, se desconecta de la base de datos y se liberan los gestores de entorno y conexión
     SQLDisconnect(hDbc);
     SQLFreeHandle(SQL_HANDLE_DBC, hDbc);
     SQLFreeHandle(SQL_HANDLE_ENV, hEnv);
-
     return 0;
-}
+    }
