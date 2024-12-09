@@ -1,0 +1,11 @@
+C:\Users\H P\source\repos\Actividad_3\bin\Debug\Actividad_3.exe.config
+C:\Users\H P\source\repos\Actividad_3\bin\Debug\Actividad_3.exe
+C:\Users\H P\source\repos\Actividad_3\bin\Debug\Actividad_3.pdb
+C:\Users\H P\source\repos\Actividad_3\obj\Debug\Actividad_3.csproj.AssemblyReference.cache
+C:\Users\H P\source\repos\Actividad_3\obj\Debug\Actividad_3.Properties.Resources.resources
+C:\Users\H P\source\repos\Actividad_3\obj\Debug\Actividad_3.csproj.GenerateResource.cache
+C:\Users\H P\source\repos\Actividad_3\obj\Debug\Actividad_3.csproj.CoreCompileInputs.cache
+C:\Users\H P\source\repos\Actividad_3\obj\Debug\Actividad_3.exe
+C:\Users\H P\source\repos\Actividad_3\obj\Debug\Actividad_3.pdb
+C:\Users\H P\source\repos\Actividad_3\obj\Debug\Actividad_3.Forms.frmRegistro.resources
+C:\Users\H P\source\repos\Actividad_3\obj\Debug\Actividad_3.main.resources
